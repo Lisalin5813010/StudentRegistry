@@ -6,72 +6,44 @@
       <input type="text" v-model="num2" placeholder="Enter second number" />
     </div>
     <div>
-      <button @click="add">+</button>
-      <button @click="subtract">-</button>
-      <button @click="multiply">*</button>
-      <button @click="divide">/</button>
+      <button @click="add" class="btn btn-info">+</button>
+      <button @click="subtract" class="btn btn-info">-</button>
+      <button @click="multiply" class="btn btn-info">*</button>
+      <button @click="divide" class="btn btn-info">/</button>
     </div>
     <p>Result: {{ result }}</p>
   </div>
 </template>
 
-<script>
-//import axios from 'axios';
 
+<script>
 export default {
-  name: 'App',
+  name: 'CalculatorView',
   data() {
     return {
-      num1: '',
-      num2: '',
+      num1: null,
+      num2: null,
       result: null,
     };
   },
   methods: {
-    async add() {
-      try {
-        const response = await axios.post('/api/add', {
-          num1: parseFloat(this.num1),
-          num2: parseFloat(this.num2),
-        });
-        this.result = response.data.result;
-      } catch (error) {
-        console.error(error);
-      }
+    add() {
+      this.result = parseFloat(this.num1) + parseFloat(this.num2);
     },
-    async subtract() {
-      try {
-        const response = await axios.post('/api/subtract', {
-          num1: parseFloat(this.num1),
-          num2: parseFloat(this.num2),
-        });
-        this.result = response.data.result;
-      } catch (error) {
-        console.error(error);
-      }
+    subtract() {
+      this.result = parseFloat(this.num1) - parseFloat(this.num2);
     },
-    async multiply() {
-      try {
-        const response = await axios.post('/api/multiply', {
-          num1: parseFloat(this.num1),
-          num2: parseFloat(this.num2),
-        });
-        this.result = response.data.result;
-      } catch (error) {
-        console.error(error);
-      }
+    multiply() {
+      this.result = parseFloat(this.num1) * parseFloat(this.num2);
     },
-    async divide() {
-      try {
-        const response = await axios.post('/api/divide', {
-          num1: parseFloat(this.num1),
-          num2: parseFloat(this.num2),
-        });
-        this.result = response.data.result;
-      } catch (error) {
-        console.error(error);
+    divide() {
+      if (parseFloat(this.num2) === 0) {
+        this.result = 'Cannot divide by zero';
+      } else {
+        this.result = parseFloat(this.num1) / parseFloat(this.num2);
       }
     },
   },
 };
 </script>
+
