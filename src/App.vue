@@ -9,13 +9,13 @@ import 'bootstrap/dist/css/bootstrap.css';
     <img alt="Vue logo" class="logo" src="@/assets/logo.svg" width="125" height="125" />
 
     <div class="wrapper">
-      <HelloWorld msg="You did itttttt!" />
-
+      <HelloWorld msg="Hi, this is Vue Project!" />
       <nav>
-        <RouterLink to="/">Home</RouterLink>
-        <RouterLink to="/about">about</RouterLink>
+        <!--RouterLink to="/">Home</RouterLink-->
+        <!--RouterLink to="/about">about</RouterLink-->
         <RouterLink to="/calculator">Calculator</RouterLink>
         <RouterLink to="/table">Table</RouterLink>
+        <RouterLink to="/chat">Chat</RouterLink>
       </nav>
     </div>
   </header>

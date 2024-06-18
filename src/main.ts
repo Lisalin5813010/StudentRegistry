@@ -1,3 +1,4 @@
+(window as any).global = window;
 import './assets/main.css'
 
 import { createApp } from 'vue'
