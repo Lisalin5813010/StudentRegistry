@@ -7,6 +7,7 @@
           <th>Name</th>
           <th>Age</th>
           <th>Grade</th>
+          <th>Action</th>
         </tr>
       </thead>
       <tbody>
@@ -14,6 +15,10 @@
           <td>{{ student.name }}</td>
           <td>{{ student.age }}</td>
           <td>{{ student.grade }}</td>
+       
+          <td>
+            <button @click="deleteStudent(student.id)">Delete</button>
+          </td>
         </tr>
       </tbody>
     </table>
@@ -28,6 +33,7 @@
 </template>
 
 <script>
+import axios from 'axios';
 import StudentService from '../services/StudentService';
 
 export default {
@@ -56,12 +62,21 @@ export default {
     },
     addStudent() {
       StudentService.addStudent(this.newStudent)
-        .then(response => {
-          this.students.push(response.data);
-          this.newStudent.name = '';
+        .then(() => {
+          this.fetchStudents();
+          this.newStudent = { name: '', age: '', grade: '' };
         })
         .catch(error => {
           console.error('Error adding student:', error);
+        });
+    },
+    deleteStudent(id) {
+      StudentService.deleteStudent(id)
+        .then(() => {
+          this.fetchStudents();
+        })
+        .catch(error => {
+          console.error('Error deleting student:', error);
         });
     }
   }

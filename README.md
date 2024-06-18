@@ -46,5 +46,5 @@ http://localhost:5173/
 ## Calculator
 <img src="img/calculator.png">
 
-## studentTable
+## StudentTable
 <img src="img/studentTable.png">

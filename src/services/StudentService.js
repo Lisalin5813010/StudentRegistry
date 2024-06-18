@@ -7,5 +7,8 @@ export default {
   },
   addStudent(student) {
     return Api().post('students', student);
+  },
+  deleteStudent(id) {
+    return Api().delete(`students/${id}`);
   }
 };
