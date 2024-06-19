@@ -1,6 +1,8 @@
 # StudentRegistry-Frontend
 
-This Vue.js project, StudentRegistry, features a calculator and a student table. It utilizes PostgreSQL as the database and is powered by a Spring Boot backend.## Project Setup
+This Vue.js project, StudentRegistry, features a calculator and a student table. It utilizes PostgreSQL as the database and is powered by a Spring Boot backend.
+
+## Project Setup
 
 ```sh
 npm install
