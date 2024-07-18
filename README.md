@@ -58,7 +58,7 @@ The `Student Table` is a table that displays the list of students. It provides t
 
 - **Add a new student**: Allows the user to add a new student to the table.
 - **Edit student information**: Enables the user to edit the information of an existing student in the table.
-- **Delete a **student\*\*: This allows the user to delete a student from the table.
-- **View student details**: Provides the ability to view the details of a specific student in the table.
+- **Delete a student**: This allows the user to delete a student from the table.
+- **Update student information**: Provides the ability to update the details of a specific student in the table.
 
 These features are essential for managing the student registry and keeping track of student information.
