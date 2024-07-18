@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "serve": "vue-cli-service serve",
+    "serve": "vue-cli-service serve --port 5173",
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "test:unit": "vitest",
@@ -13,21 +13,26 @@
     "type-check": "vue-tsc --build --force"
   },
   "dependencies": {
+    "@element-plus/icons-vue": "^2.3.1",
+    "@stomp/stompjs": "^7.0.0",
     "axios": "^1.7.2",
     "bootstrap": "^5.3.3",
     "bootstrap-vue": "^2.23.1",
+    "element-plus": "^2.7.6",
     "pinia": "^2.1.7",
     "sockjs-client": "^1.6.1",
     "stompjs": "^2.3.3",
+    "update": "^0.7.4",
     "vue": "^3.4.27",
     "vue-class-component": "^8.0.0-rc.1",
-    "vue-router": "^4.3.0"
+    "vue-router": "^4.3.3",
+    "vuex": "^4.1.0"
   },
   "devDependencies": {
     "@tsconfig/node20": "^20.1.4",
     "@types/jsdom": "^21.1.6",
     "@types/node": "^20.12.5",
-    "@vitejs/plugin-vue": "^5.0.4",
+    "@vitejs/plugin-vue": "^5.0.5",
     "@vitejs/plugin-vue-jsx": "^3.1.0",
     "@vue/cli-plugin-typescript": "^5.0.8",
     "@vue/cli-service": "^5.0.8",
