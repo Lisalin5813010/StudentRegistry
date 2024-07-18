@@ -1,4 +1,4 @@
-<template>
+<!--template>
   <div class="chat">
     <div class="messages">
       <div v-for="message in messages" :key="message.content" class="message">
@@ -66,4 +66,4 @@ input {
   padding: 10px;
   border: 1px solid #ddd;
 }
-</style>
+</style-->

@@ -1,5 +1,5 @@
-import SockJS from 'sockjs-client';
-import Stomp from 'stompjs';
+/*import SockJS from 'sockjs-client';
+import Stomp from '@stomp/stompjs';
 
 const SOCKET_URL = 'http://localhost:8081/chat-websocket';
 
@@ -27,4 +27,4 @@ class WebSocketService {
   }
 }
 
-export default new WebSocketService();
+export default new WebSocketService();*/
