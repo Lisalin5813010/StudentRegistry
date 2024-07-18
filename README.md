@@ -41,11 +41,15 @@ npm run build
 
 ### Register
 
-<img src="img/register.png">
+<div align="center">
+    <img src="img/register.png" width="60%" />
+</div>
 
 ### Login
 
-<img src="img/login.png">
+<div align="center">
+    <img src="img/register.png" width="60%" />
+</div>
 
 Username: `Jane Smith`</br>
 Password: `123456`
