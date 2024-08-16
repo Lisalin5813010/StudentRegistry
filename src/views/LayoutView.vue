@@ -1,37 +1,36 @@
 <template>
-  <div>
-    <nav>
-      <router-link to="/">MyApp</router-link>
-      <router-link to="/table">Table</router-link>
-      <router-link to="/book">Book System</router-link>
+  <nav>
+    <router-link to="/table">用户信息</router-link>
+    <router-link to="/book">图书系统</router-link>
+    <router-link to="/type">图书分类</router-link>
+    <router-link to="/audit">请假审核</router-link>
 
-      <!-- Dropdown List -->
-      <el-dropdown
-        style="
-          text-decoration: none;
-          color: hsla(160, 100%, 37%, 1);
-          transition: 0.4s;
-          padding: 3px;
-        "
-      >
-        <span>{{ loginstudent.name }}</span>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item
-              ><div @click="logout()">Log out</div></el-dropdown-item
-            >
-          </el-dropdown-menu>
-        </template>
-      </el-dropdown>
-    </nav>
-  </div>
+    <!-- Dropdown List -->
+    <el-dropdown
+      style="
+        text-decoration: none;
+        color: hsla(160, 100%, 37%, 1);
+        transition: 0.4s;
+        padding: 3px;
+      "
+    >
+      <span>{{ loginstudent.name }}</span>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item
+            ><div @click="logout()">Log out</div></el-dropdown-item
+          >
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+  </nav>
+  <router-view></router-view>
 </template>
 
 <script>
-// Import the TableView component
-//import TableView from "./TableView.vue";
+import { defineComponent } from "vue";
 
-export default {
+export default defineComponent({
   name: "LayoutView",
   data() {
     return {
@@ -46,7 +45,7 @@ export default {
       this.$router.push("/login");
     },
   },
-};
+});
 </script>
 
 <style>

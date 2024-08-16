@@ -54,15 +54,13 @@ npm run build
 Username: `Jane Smith`</br>
 Password: `123456`
 
-## StudentTable
+## Book table
 
-<img src="img/studentTable.png">
+<img src="img/bookTable.png">
 
-The `Student Table` is a table that displays the list of students. It provides the following features:
+The `Book Table` is a table that displays the list of books in the data source. It provides the following features:
 
-- **Add a new student**: Allows the user to add a new student to the table.
-- **Edit student information**: Enables the user to edit the information of an existing student in the table.
-- **Delete a student**: This allows the user to delete a student from the table.
-- **Update student information**: Provides the ability to update the details of a specific student in the table.
-
-These features are essential for managing the student registry and keeping track of student information.
+- **Add a new student**: Allows the user to add a new book to the table, including the book's title, author, and previews of images.
+- **Edit student information**: Enables the user to edit the information of an existing book in the table.
+- **Delete a book**: This allows the user to delete a book from the table.
+- **Update book information**: Provides the ability to update the details of a specific book in the table.

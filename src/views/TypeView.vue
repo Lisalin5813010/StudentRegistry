@@ -4,7 +4,7 @@
       <el-input
         v-model="params.name"
         style="width: 300px"
-        placeholder="请输入图书名称"
+        placeholder="请输入分类名称"
       ></el-input>
       <el-button
         style="margin-left: 20px; color: hsla(160, 100%, 37%, 1)"
@@ -21,45 +21,29 @@
         @click="dialogFormVisible = true"
         >Add</el-button
       >
+      <el-popconfirm title="确定删除这些数据吗？" @confirm="delBatch()">
+        <template v-slot:reference>
+          <el-button style="margin-left: 20px; color: red">批量删除</el-button>
+        </template>
+      </el-popconfirm>
+      <el-button
+        style="margin-left: 20px; color: hsla(160, 100%, 37%, 1)"
+        @click="exp()"
+        >导出报表</el-button
+      >
     </div>
     <div>
-      <el-table :data="book" style="width: 100%">
-        <el-table-column label="图书封面" width="100">
-          <template v-slot="scope">
-            <el-image
-              style="width: 70px; height: 70px"
-              :src="'http://localhost:8082/api/files/' + scope.row.img"
-              :preview-src-list="[
-                'http://localhost:8082/api/files/' + scope.row.img,
-              ]"
-              @click="handleImageLoad(scope)"
-            />
-          </template>
-        </el-table-column>
+      <el-table
+        :data="type"
+        style="width: 100%"
+        @selection-change="handleSelectionChange"
+      >
+        <el-table-column type="selection" />
+        <el-table-column prop="name" label="Name" width="200"></el-table-column>
         <el-table-column
-          prop="name"
-          label="图书名称"
-          width="200"
-        ></el-table-column>
-        <el-table-column
-          prop="author"
-          label="图书作者"
-          width="200"
-        ></el-table-column>
-        <el-table-column
-          prop="price"
-          label="图书价格"
-          width="200"
-        ></el-table-column>
-        <el-table-column
-          prop="press"
-          width="200"
-          label="图书出版社"
-        ></el-table-column>
-        <el-table-column
-          prop="typeName"
-          width="200"
-          label="图书分类"
+          prop="description"
+          label="Description"
+          width="400"
         ></el-table-column>
 
         <el-table-column label="操作">
@@ -90,64 +74,20 @@
     <div>
       <el-dialog title="请填写新增信息" v-model="dialogFormVisible">
         <el-form :model="form">
-          <el-form-item label="图书名称">
+          <el-form-item label="分类名称">
             <el-input
               v-model="form.name"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="图书封面">
-            <el-upload
-              action="http://localhost:8082/api/files/upload"
-              :on-success="handleExceed"
-            >
-              <el-button style="color: hsla(160, 100%, 37%, 1)"
-                >点击上传</el-button
-              >
-            </el-upload>
-          </el-form-item>
-          <el-form-item label="图书作者">
+
+          <el-form-item label="分类描述">
             <el-input
-              v-model="form.author"
+              v-model="form.description"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
-          </el-form-item>
-          <el-form-item label="图书价格">
-            <el-input
-              v-model="form.price"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书出版社">
-            <el-input
-              v-model="form.press"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书封面">
-            <el-input
-              v-model="form.img"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书分类">
-            <el-select
-              v-model="form.typeId"
-              placeholder="Select"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in this.typeObj"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -161,9 +101,8 @@
 
 <script>
 import request from "@/utils/request";
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "BookView",
+export default {
+  name: "TypeView",
   data() {
     return {
       loginstudent: localStorage.getItem("user")
@@ -172,11 +111,10 @@ export default defineComponent({
       params: {
         name: "",
       },
-      book: [],
+      type: [],
       dialogFormVisible: false,
       form: {},
-      student: [],
-      typeObj: [],
+      multipleSelection: [],
     };
   },
   // 页面加载的时候，做一些事情，在created里面
@@ -185,20 +123,12 @@ export default defineComponent({
   },
   // 定义一些页面上控件出发的事件调用的方法
   methods: {
-    findTypes() {
-      request.get("/book").then((res) => {
-        if (res.code === "0") {
-          this.typeObj = res.data;
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
-    },
     load() {
-      request.get("/book", {}).then((res) => {
+      request.get("/type", {}).then((res) => {
         if (res.code === "0") {
-          this.book = res.data;
-          //console.log("Books are " + this.book);
+          this.type = res.data;
+          //this.type = [{ id: "1", name: "csnadcojd", description: "cdsckd" }];
+          //console.log("Types are" + this.type);
         } else {
           this.$message({
             message: res.msg,
@@ -209,14 +139,14 @@ export default defineComponent({
     },
     findBySearch() {
       request
-        .get("/book/search", {
+        .get("/type/search", {
           params: {
             name: this.params.name,
           },
         })
         .then((res) => {
           if (res.code === "0") {
-            this.book = [res.data];
+            this.type = [res.data];
           } else {
             this.$message({
               message: res.msg,
@@ -225,12 +155,15 @@ export default defineComponent({
           }
         });
     },
+
     edit(obj) {
       this.form = obj;
+      //console.log(this.form.author);
       this.dialogFormVisible = true;
     },
     reset() {
       this.name = "";
+      //this.load();
     },
     handleSizeChange(pageSize) {
       //this.params.pageSize = pageSize;
@@ -241,8 +174,7 @@ export default defineComponent({
     },
 
     submit() {
-      request.post("/book", this.form).then((res) => {
-        //console.log("This is this.form" + this.form);
+      request.post("/type", this.form).then((res) => {
         if (res.code === "0") {
           this.$message({
             message: "操作成功",
@@ -259,7 +191,7 @@ export default defineComponent({
       });
     },
     del(id) {
-      request.delete("/book/" + id).then((res) => {
+      request.delete("/type/" + id).then((res) => {
         if (res.code === "0") {
           this.$message({
             message: "删除成功",
@@ -278,18 +210,47 @@ export default defineComponent({
       localStorage.removeItem("user");
       this.$router.push("/login");
     },
-    handleExceed(res) {
-      //console.log(res);
-      this.form.img = res.data;
-      //console.log("this.form.img" + this.form.img);
-    },
+    handleExceed(res) {},
     handleImageLoad(scope) {
-      console.log(
-        "scope.row.img is " + "http://localhost:8082/api/files/" + scope.row.img
-      );
+      //console.log(scope.row.img);
     },
+    handleSelectionChange(val) {
+      this.multipleSelection = val.map((proxy) => {
+        return {
+          id: proxy.id,
+          name: proxy.name,
+          description: proxy.description,
+        };
+      });
+    },
+    delBatch() {
+      if (this.multipleSelection.length === 0) {
+        this.$message({
+          message: "请选择要删除的数据",
+          type: "warning",
+        });
+
+        return;
+      }
+      console.log(this.multipleSelection);
+      request.put("type/delBatch", this.multipleSelection).then((res) => {
+        if (res.code === "0") {
+          this.$message({
+            message: "删除成功",
+            type: "success",
+          });
+          this.load();
+        } else {
+          this.$message({
+            message: res.msg,
+            type: "error",
+          });
+        }
+      });
+    },
+    exp() {},
   },
-});
+};
 </script>
 
 <style>

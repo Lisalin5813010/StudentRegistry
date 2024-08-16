@@ -1,27 +1,4 @@
 <template>
-  <nav>
-    <router-link to="/">MyApp</router-link>
-    <router-link to="/table">Table</router-link>
-    <router-link to="/book">Book System</router-link>
-    <el-dropdown
-      style="
-        text-decoration: none;
-        color: hsla(160, 100%, 37%, 1);
-        transition: 0.4s;
-        padding: 3px;
-      "
-    >
-      <span>{{ loginstudent.name }}</span>
-
-      <template #dropdown>
-        <el-dropdown-menu>
-          <el-dropdown-item
-            ><div @click="logout()">Log out</div></el-dropdown-item
-          >
-        </el-dropdown-menu>
-      </template>
-    </el-dropdown>
-  </nav>
   <div>
     <div style="margin-top: 80px">
       <el-input
@@ -30,35 +7,52 @@
         placeholder="请输入姓名"
       ></el-input>
       <el-button
-        type="warning"
-        style="margin-left: 10px"
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
         @click="findBySearch()"
-        >Search</el-button
+        >搜索</el-button
       >
-      <el-button type="warning" style="margin-left: 10px" @click="reset()"
-        >Reset</el-button
+      <el-button
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
+        @click="reset()"
+        >重置</el-button
       >
-      <el-button type="primary" style="margin-left: 10px" @click="add()"
-        >Add</el-button
+      <el-button
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
+        @click="add()"
+        >添加</el-button
       >
     </div>
     <div>
       <el-table :data="student" style="width: 100%">
-        <el-table-column prop="name" label="Name"></el-table-column>
-        <el-table-column prop="age" label="Age"></el-table-column>
-        <el-table-column prop="grade" label="Grade"></el-table-column>
+        <el-table-column prop="name" label="姓名" width="200"></el-table-column>
+        <el-table-column prop="age" label="年龄" width="200"></el-table-column>
+        <el-table-column
+          prop="grade"
+          label="成绩"
+          width="200"
+        ></el-table-column>
+        <el-table-column
+          prop="password"
+          label="密码"
+          width="200"
+        ></el-table-column>
         <el-table-column label="操作">
           <template v-slot="scope">
             <el-button
-              type="primary"
               size="small"
-              style="margin-left: 5px"
+              style="
+                margin-left: 5px;
+                width: 60px;
+                color: hsla(160, 100%, 37%, 1);
+              "
               @click="edit(scope.row)"
               >Edit</el-button
             >
             <el-popconfirm title="Delete?" @confirm="del(scope.row.id)">
               <template v-slot:reference>
-                <el-button type="danger" size="small" style="margin-left: 5px"
+                <el-button
+                  size="small"
+                  style="margin-left: 5px; width: 60px; color: red"
                   >Delete</el-button
                 >
               </template>
@@ -67,41 +61,40 @@
         </el-table-column>
       </el-table>
     </div>
-    <div style="margin-top: 10px">
-      <!--el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        v-model:current-page="params.pageNum"
-        :page-sizes="[5, 10, 15, 20]"
-        v-model:page-size="params.pageSize"
-        layout="total, sizes, prev, pager, next"
-        :total="total"
-      >
-      </el-pagination-->
-    </div>
+    <div style="margin-top: 10px"></div>
     <div>
       <el-dialog title="请填写信息" v-model="dialogFormVisible" width="30%">
         <el-form :model="form">
-          <el-form-item label="Name" label-width="15%">
+          <el-form-item label="姓名" label-width="15%">
             <el-input
               v-model="form.name"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Age" label-width="15%">
+          <el-form-item label="年龄" label-width="15%">
             <el-input
               v-model="form.age"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="Grade" label-width="15%">
+          <el-form-item label="成绩" label-width="15%">
             <el-input
               v-model="form.grade"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
+          </el-form-item>
+          <el-form-item label="角色">
+            <el-select
+              v-model="form.role"
+              placeholder="Select"
+              style="width: 240px"
+            >
+              <el-option label="学生" value="ROLE_STUDENT"></el-option>
+              <el-option label="教师" value="ROLE_TEACHER"></el-option>
+            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
@@ -117,6 +110,7 @@
 import request from "@/utils/request";
 
 export default {
+  name: "TableView",
   data() {
     return {
       loginstudent: localStorage.getItem("user")
@@ -139,7 +133,7 @@ export default {
     load() {
       request
         .get("/student", {
-          //params: this.params
+          //params: this.params,
         })
         .then((res) => {
           if (res.code === "0") {

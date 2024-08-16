@@ -54,7 +54,7 @@ export default {
   name: "login",
   data() {
     return {
-      student: { name: "", password: "" },
+      student: {},
     };
   },
   // 页面加载的时候，做一些事情，在created里面

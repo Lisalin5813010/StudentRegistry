@@ -3,65 +3,57 @@
     <div style="margin-top: 80px">
       <el-input
         v-model="params.name"
-        style="width: 300px"
-        placeholder="请输入图书名称"
+        style="width: 200px"
+        placeholder="请输入请假原因"
       ></el-input>
       <el-button
-        style="margin-left: 20px; color: hsla(160, 100%, 37%, 1)"
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
         @click="findBySearch()"
-        >Search</el-button
+        >搜索</el-button
       >
       <el-button
-        style="margin-left: 20px; color: hsla(160, 100%, 37%, 1)"
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
         @click="reset()"
-        >Reset</el-button
+        >重置</el-button
       >
       <el-button
-        style="margin-left: 20px; color: hsla(160, 100%, 37%, 1)"
-        @click="dialogFormVisible = true"
-        >Add</el-button
+        style="margin-left: 5px; width: 100px; color: hsla(160, 100%, 37%, 1)"
+        @click="add()"
+        >添加</el-button
       >
     </div>
     <div>
-      <el-table :data="book" style="width: 100%">
-        <el-table-column label="图书封面" width="100">
-          <template v-slot="scope">
-            <el-image
-              style="width: 70px; height: 70px"
-              :src="'http://localhost:8082/api/files/' + scope.row.img"
-              :preview-src-list="[
-                'http://localhost:8082/api/files/' + scope.row.img,
-              ]"
-              @click="handleImageLoad(scope)"
-            />
-          </template>
-        </el-table-column>
+      <el-table :data="student" style="width: 100%">
         <el-table-column
           prop="name"
-          label="图书名称"
+          label="请假缘由"
           width="200"
         ></el-table-column>
         <el-table-column
-          prop="author"
-          label="图书作者"
+          prop="time"
+          label="请假时间"
           width="200"
         ></el-table-column>
         <el-table-column
-          prop="price"
-          label="图书价格"
+          prop="day"
+          label="请假天数"
           width="200"
         ></el-table-column>
         <el-table-column
-          prop="press"
+          prop="userId"
+          label="请假用户ID"
           width="200"
-          label="图书出版社"
         ></el-table-column>
         <el-table-column
-          prop="typeName"
+          prop="status"
+          label="审核状态"
           width="200"
-          label="图书分类"
         ></el-table-column>
-
+        <el-table-column
+          prop="reason"
+          label="审核意见"
+          width="200"
+        ></el-table-column>
         <el-table-column label="操作">
           <template v-slot="scope">
             <el-button
@@ -87,72 +79,39 @@
         </el-table-column>
       </el-table>
     </div>
+    <div style="margin-top: 10px"></div>
     <div>
-      <el-dialog title="请填写新增信息" v-model="dialogFormVisible">
+      <el-dialog title="请填写信息" v-model="dialogFormVisible" width="30%">
         <el-form :model="form">
-          <el-form-item label="图书名称">
+          <el-form-item label="请假原因" label-width="15%">
             <el-input
               v-model="form.name"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
           </el-form-item>
-          <el-form-item label="图书封面">
-            <el-upload
-              action="http://localhost:8082/api/files/upload"
-              :on-success="handleExceed"
-            >
-              <el-button style="color: hsla(160, 100%, 37%, 1)"
-                >点击上传</el-button
-              >
-            </el-upload>
+          <el-form-item label="请假日期" label-width="15%">
+            <el-date-picker
+              v-model="form.time"
+              type="date"
+              style="width: 90%"
+              placeholder="Pick a date"
+              valueformat="yyyy-MM-dd"
+              :default-value="new Date(2024, 9, 1)"
+            />
           </el-form-item>
-          <el-form-item label="图书作者">
+
+          <el-form-item label="请假天数" label-width="15%">
             <el-input
-              v-model="form.author"
+              v-model="form.day"
               autocomplete="off"
               style="width: 90%"
             ></el-input>
-          </el-form-item>
-          <el-form-item label="图书价格">
-            <el-input
-              v-model="form.price"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书出版社">
-            <el-input
-              v-model="form.press"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书封面">
-            <el-input
-              v-model="form.img"
-              autocomplete="off"
-              style="width: 90%"
-            ></el-input>
-          </el-form-item>
-          <el-form-item label="图书分类">
-            <el-select
-              v-model="form.typeId"
-              placeholder="Select"
-              style="width: 240px"
-            >
-              <el-option
-                v-for="item in this.typeObj"
-                :key="item.id"
-                :label="item.name"
-                :value="item.id"
-              />
-            </el-select>
           </el-form-item>
         </el-form>
         <div slot="footer" class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取消</el-button>
-          <el-button type="primary" @click="submit()">确定</el-button>
+          <el-button @click="dialogFormVisible = false">取 消</el-button>
+          <el-button type="primary" @click="submit()">确 定</el-button>
         </div>
       </el-dialog>
     </div>
@@ -161,9 +120,9 @@
 
 <script>
 import request from "@/utils/request";
-import { defineComponent } from "vue";
-export default defineComponent({
-  name: "BookView",
+
+export default {
+  name: "TableView",
   data() {
     return {
       loginstudent: localStorage.getItem("user")
@@ -172,11 +131,9 @@ export default defineComponent({
       params: {
         name: "",
       },
-      book: [],
+      student: [],
       dialogFormVisible: false,
       form: {},
-      student: [],
-      typeObj: [],
     };
   },
   // 页面加载的时候，做一些事情，在created里面
@@ -185,38 +142,15 @@ export default defineComponent({
   },
   // 定义一些页面上控件出发的事件调用的方法
   methods: {
-    findTypes() {
-      request.get("/book").then((res) => {
-        if (res.code === "0") {
-          this.typeObj = res.data;
-        } else {
-          this.$message.error(res.msg);
-        }
-      });
-    },
     load() {
-      request.get("/book", {}).then((res) => {
-        if (res.code === "0") {
-          this.book = res.data;
-          //console.log("Books are " + this.book);
-        } else {
-          this.$message({
-            message: res.msg,
-            type: "error",
-          });
-        }
-      });
-    },
-    findBySearch() {
       request
-        .get("/book/search", {
-          params: {
-            name: this.params.name,
-          },
+        .get("/audit", {
+          //params: this.params,
         })
         .then((res) => {
           if (res.code === "0") {
-            this.book = [res.data];
+            this.student = res.data;
+            console.log(this.student);
           } else {
             this.$message({
               message: res.msg,
@@ -225,12 +159,41 @@ export default defineComponent({
           }
         });
     },
+    findBySearch() {
+      request
+        .get("/audit/search", {
+          params: {
+            name: this.params.name,
+          },
+        })
+        .then((res) => {
+          if (res.code === "0") {
+            //console.log(res.data.list);
+            this.student = [res.data];
+            this.total = res.data.total;
+            //console.log(res.data);
+          } else {
+            //console.log(res.data.list);
+            this.$message({
+              message: res.msg,
+              type: "error",
+            });
+          }
+        });
+    },
+
     edit(obj) {
+      //console.log('Editing row:', obj);
       this.form = obj;
       this.dialogFormVisible = true;
     },
     reset() {
-      this.name = "";
+      this.params = {
+        //pageNum: 1,
+        //pageSize: 5,
+        name: "",
+      };
+      //this.load();
     },
     handleSizeChange(pageSize) {
       //this.params.pageSize = pageSize;
@@ -238,11 +201,11 @@ export default defineComponent({
     },
     handleCurrentChange(pageNum) {
       //this.params.pageNum = pageNum;
+      //this.load();
     },
-
     submit() {
-      request.post("/book", this.form).then((res) => {
-        //console.log("This is this.form" + this.form);
+      request.post("/audit", this.form).then((res) => {
+        console.log(this.form);
         if (res.code === "0") {
           this.$message({
             message: "操作成功",
@@ -258,8 +221,12 @@ export default defineComponent({
         }
       });
     },
+    add() {
+      this.form = {};
+      this.dialogFormVisible = true;
+    },
     del(id) {
-      request.delete("/book/" + id).then((res) => {
+      request.delete("/audit/" + id).then((res) => {
         if (res.code === "0") {
           this.$message({
             message: "删除成功",
@@ -278,20 +245,9 @@ export default defineComponent({
       localStorage.removeItem("user");
       this.$router.push("/login");
     },
-    handleExceed(res) {
-      //console.log(res);
-      this.form.img = res.data;
-      //console.log("this.form.img" + this.form.img);
-    },
-    handleImageLoad(scope) {
-      console.log(
-        "scope.row.img is " + "http://localhost:8082/api/files/" + scope.row.img
-      );
-    },
   },
-});
+};
 </script>
-
 <style>
 nav {
   position: absolute;
@@ -320,12 +276,5 @@ nav ul li a {
 
 nav ul li a:hover {
   text-decoration: underline;
-}
-.el-form-item .el-form-item__label {
-  flex-basis: 100px; /* Adjust label width */
-}
-
-.el-form-item .el-form-item__content {
-  flex-grow: 1;
 }
 </style>

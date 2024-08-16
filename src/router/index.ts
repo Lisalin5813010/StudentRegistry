@@ -1,35 +1,57 @@
-import { createRouter, createWebHistory } from "vue-router";
+import {
+  createRouter,
+  createWebHistory,
+  type RouteRecordRaw,
+} from "vue-router";
 import LayoutView from "../views/LayoutView.vue";
+import TableView from "../views/TableView.vue";
+import BookView from "../views/BookView.vue";
+import TypeView from "../views/TypeView.vue";
+import AuditView from "../views/AuditView.vue";
+const routes: Array<RouteRecordRaw> = [
+  {
+    path: "/",
+    name: "LayoutView",
+    component: LayoutView,
+    children: [
+      {
+        path: "book",
+        name: "BookView",
+        component: BookView,
+      },
+      {
+        path: "table",
+        name: "TableView",
+        component: TableView,
+      },
+
+      {
+        path: "type",
+        name: "TypeView",
+        component: TypeView,
+      },
+      {
+        path: "audit",
+        name: "AuditView",
+        component: AuditView,
+      },
+    ],
+  },
+  {
+    path: "/login",
+    name: "login",
+    component: () => import("../views/LoginView.vue"),
+  },
+  {
+    path: "/register",
+    name: "register",
+    component: () => import("../views/RegisterView.vue"),
+  },
+];
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
-    {
-      path: "/login",
-      name: "login",
-      component: () => import("../views/LoginView.vue"),
-    },
-    {
-      path: "/register",
-      name: "register",
-      component: () => import("../views/RegisterView.vue"),
-    },
-    {
-      path: "/",
-      name: "layout",
-      component: () => import("../views/LayoutView.vue"),
-    },
-    {
-      path: "/table",
-      name: "table",
-      component: () => import("../views/TableView.vue"),
-    },
-    {
-      path: "/book",
-      name: "book",
-      component: () => import("../views/BookView.vue"),
-    },
-  ],
+  routes,
 });
 
 export default router;
